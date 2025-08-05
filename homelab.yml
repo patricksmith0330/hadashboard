@@ -1,0 +1,479 @@
+views:
+  - type: sections
+    max_columns: 4
+    title: Homelab
+    path: homelab
+    sections:
+      - type: grid
+        cards:
+          - type: custom:stack-in-card
+            mode: vertical
+            cards:
+              - type: picture
+                image: /local/Pihole.png
+                card_mod:
+                  style: |
+                    ha-card {
+                      width: 150px !important;
+                      overflow: invisible !important;
+                      margin-top: 1.5rem;
+                      margin-bottom: 0rem;
+                      margin-left: 0.5rem;
+                      left: 50px
+                      top: 0px
+                    }
+              - type: horizontal-stack
+                cards:
+                  - type: vertical-stack
+                    cards:
+                      - type: markdown
+                        content: >
+                          **DNS Queries:** {{ states("sensor.dns_queries") |
+                          float | round(0) }}
+
+                          **Blocked:** {{ states("sensor.dns_blocked") | float |
+                          round(0) }}
+
+                          **Ratio:** {{ states("sensor.dns_ratio") | float |
+                          round(0) }}%
+                  - type: vertical-stack
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: custom:mushroom-entity-card
+                            entity: switch.artemis
+                            tap_action:
+                              action: toggle
+                            name: Primary
+                            icon: mdi:power
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  width: 150px !important;
+                                  overflow: invisible !important;
+                                  margin-top: -4rem;
+                                  margin-bottom: 0.5rem;
+                                  margin-left: 0rem;
+                                  left: 50px
+                                  top: 0px
+                                }
+                          - type: custom:mushroom-entity-card
+                            entity: switch.aurora
+                            tap_action:
+                              action: toggle
+                            name: Secondary
+                            icon: mdi:power
+          - type: vertical-stack
+            cards:
+              - type: heading
+                icon: mdi:home-assistant
+                heading: Home Assistant
+                heading_style: title
+                tap_action:
+                  action: none
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.system_monitor_disk_free
+                    icon: mdi:harddisk
+                    icon_color: red
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    name: Free Space
+                    layout: horizontal
+                    fill_container: false
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.system_monitor_processor_temperature
+                    icon: mdi:thermometer-lines
+                    icon_color: blue
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    name: Systemp
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.system_monitor_last_boot
+                    name: Uptime
+                    icon: mdi:chart-line-stacked
+                    icon_color: green
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: more-info
+                columns: 3
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: CPU
+                    entities:
+                      - entity: sensor.system_monitor_processor_use
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #3674B5;
+                        }
+                  - type: custom:mini-graph-card
+                    name: RAM
+                    entities:
+                      - entity: sensor.system_monitor_memory_usage
+                    icon: mdi:memory
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #3674B5;
+                        }
+          - type: vertical-stack
+            cards:
+              - type: heading
+                icon: phu:proxmox
+                heading: Proxmox
+                heading_style: title
+                tap_action:
+                  action: none
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.10_0_30_3_disk_free
+                    icon: mdi:harddisk
+                    icon_color: red
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    name: Free Space
+                    layout: horizontal
+                    fill_container: false
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.10_0_30_3_core_0_temperature
+                    icon: mdi:thermometer-lines
+                    icon_color: blue
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    name: Systemp
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.10_0_30_3_uptime
+                    name: Uptime
+                    icon: mdi:chart-line-stacked
+                    icon_color: green
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: more-info
+                columns: 3
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.docker_version
+                    icon: mdi:docker
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.docker_containers_total
+                    name: Total
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.docker_containers_running
+                    name: Running
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: CPU
+                    entities:
+                      - entity: sensor.10_0_30_3_cpu_load
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #FFC107;
+                        }
+                  - type: custom:mini-graph-card
+                    name: RAM
+                    entities:
+                      - entity: sensor.10_0_30_3_memory_usage
+                    icon: mdi:memory
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #FFC107;
+                        }
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: heading
+                icon: phu:truenas-logo
+                heading: Truenas
+                heading_style: title
+                tap_action:
+                  action: none
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:mushroom-entity-card
+                    icon: mdi:harddisk
+                    icon_color: red
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    name: Free Space
+                    layout: horizontal
+                    fill_container: false
+                    entity: sensor.truenas_system_zpool_free
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.10_0_30_3_core_0_temperature
+                    icon: mdi:thermometer-lines
+                    icon_color: blue
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    name: Systemp
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.truenas_system_uptime
+                    name: Uptime
+                    icon: mdi:chart-line-stacked
+                    icon_color: green
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: more-info
+                columns: 3
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: CPU
+                    entities:
+                      - entity: sensor.10_0_10_3_cpu_load
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #008ad1;
+                        }
+                  - type: custom:mini-graph-card
+                    name: RAM
+                    entities:
+                      - entity: sensor.truenas_system_memory_usage
+                    icon: mdi:memory
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #008ad1;
+                        }
+          - type: vertical-stack
+            cards:
+              - type: heading
+                icon: phu:unifi
+                heading: UniFi Network
+                heading_style: title
+                tap_action:
+                  action: none
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.unifi_clients
+                    icon: mdi:wifi
+                    icon_color: red
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    name: Clients
+                    layout: horizontal
+                    fill_container: false
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.dream_machine_pro_dream_machine_pro_cpu_temperature
+                    icon: mdi:thermometer-lines
+                    icon_color: blue
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: none
+                    name: Systemp
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.dream_machine_pro_uptime
+                    name: Uptime
+                    icon: mdi:chart-line-stacked
+                    icon_color: green
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    tap_action:
+                      action: more-info
+                columns: 3
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: Download
+                    icon: mdi:download
+                    entities:
+                      - entity: sensor.dream_machine_pro_port_9_rx
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #3674B5;
+                        }
+                  - type: custom:mini-graph-card
+                    name: Upload
+                    icon: mdi:upload
+                    entities:
+                      - entity: sensor.dream_machine_pro_port_9_tx
+                    show:
+                      graph: bar
+                    animate: true
+                    smoothing: true
+                    card_mod:
+                      style: |
+                        ha-card .graph .bar {
+                          fill: #3674B5;
+                        }
+          - type: custom:navbar-card
+            mobile:
+              show_labels: true
+            desktop:
+              show_labels: true
+              position: left
+              min_width: 768
+            routes:
+              - url: /dashboard-mobile/home
+                label: Home
+                icon: phu:tabbar-home
+                icon_selected: phu:tabbar-home
+              - icon: mdi:sofa-outline
+                label: Rooms
+                tap_action:
+                  action: open-popup
+                popup:
+                  - icon: mdi:sofa-outline
+                    url: /dashboard-mobile/living_room
+                  - icon: mdi:fridge-outline
+                    url: /dashboard-mobile/kitchen
+                  - icon: mdi:remote-desktop
+                    url: /dashboard-mobile/office
+                  - icon: mdi:sofa
+                    url: /dashboard-mobile/family_room
+                  - icon: mdi:bed-king
+                    url: /dashboard-mobile/main_bedroom
+                  - icon: mdi:horse
+                    url: /dashboard-mobile/mackynleigh
+                  - icon: mdi:space-station
+                    url: /dashboard-mobile/macallister
+                  - icon: mdi:unicorn-variant
+                    url: /dashboard-mobile/breannleigh
+                  - icon: mdi:google-downasaur
+                    url: /dashboard-mobile/nathaniel
+                  - icon: mdi:garage
+                    url: /dashboard-mobile/garage
+              - url: /dashboard-temp/movies
+                label: Movies
+                icon: phu:jellyfin
+                icon_selected: mdi:movie
+              - icon: mdi:dots-horizontal
+                label: More
+                tap_action:
+                  action: open-popup
+                popup:
+                  - icon: mdi:cog
+                    url: /config/dashboard
+                  - icon: mdi:hammer
+                    url: /developer-tools/yaml
+                  - icon: mdi:power
+                    tap_action:
+                      action: call-service
+                      service: homeassistant.restart
+                      service_data: {}
+                      confirmation:
+                        text: Are you sure you want to restart Home Assistant?
+                  - icon: mdi:fit-to-screen-outline
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.kiosk_mode
+            styles: |
+              .navbar {
+                background: var(--nav-background);
+                backdrop-filter: blur(33px);
+                -webkit-backdrop-filter: blur(33px) !important;
+                background-blend-mode: overlay;
+                border-radius: 20px; /* Add rounded corners */
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                margin-bottom: 15px;
+                overflow: hidden; /* Hide any overflow caused by rounded corners */
+              }
+
+              .navbar-item {
+                border-radius: 30px; /* Apply rounded corners to the items as well */
+              }
+
+              .navbar-item.active {
+                background-color: rgba(0, 0, 255, 0.1); /* Adjust the blue highlight color and opacity */
+              }
+
+              .submenu {
+                background: var(--nav-background);
+                backdrop-filter: blur(33px);
+                -webkit-backdrop-filter: blur(33px) !important;
+                border-radius: 10px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+              }
+      - type: grid
+        cards:
+          - type: custom:gap-card
+            grid_options:
+              columns: 12
+              rows: 2
