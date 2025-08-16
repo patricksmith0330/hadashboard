@@ -1,0 +1,175 @@
+type: custom:stack-in-card
+card_mod:
+  style: |
+    ha-card {
+      border-radius: 20px;
+      padding: 5px;
+    }
+cards:
+  - type: custom:mushroom-title-card
+    title: |-
+      {%- if now().hour < 12 -%}Good Morning
+      {%- elif now().hour < 18 -%}Good Afternoon
+      {%- else -%}Good Evening{%- endif -%},
+      {{user}}
+    card_mod:
+      style: |
+        ha-card {
+          font-weight: 500 !important;
+        }
+        ha-card * {
+          font-weight: 500 !important;
+        }
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        icon: >
+          {% if is_state("cover.ratgdov25i_0b0f21_door", 'open')
+          %}mdi:garage-open{% else %}mdi:garage{% endif %}
+        icon_color: blue
+        layout: vertical
+        primary: Garage
+        entity: cover.ratgdov25i_0b0f21_door
+        card_mod:
+          style: |
+            ha-card {
+              --icon-size: 40px;
+              --card-primary-font-size: 12px;
+              --card-secondary-font-size: 14px;
+              border-radius: 0px;
+            }
+            mushroom-shape-icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: transparent;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+      - type: custom:mushroom-template-card
+        entity: alarm_control_panel.vivint
+        icon: >
+          {% set alarm_state = states(entity) %} {% if alarm_state == 'disarmed'
+          %}mdi:shield-off {% elif alarm_state == 'armed_home' %}mdi:shield-home
+          {% elif alarm_state == 'armed_away' %}mdi:shield-lock {% elif
+          alarm_state == 'armed_night' %}mdi:shield-moon {% elif alarm_state ==
+          'triggered' %}mdi:bell-ring-outline {% else %}mdi:shield-outline {%
+          endif %}
+        icon_color: >
+          {% set alarm_state = states(entity) %} {% if alarm_state in
+          ['disarmed', 'armed_home', 'armed_away', 'armed_night', 'triggered']
+          %}purple{% else %}blue{% endif %}
+        layout: vertical
+        primary: Vivint
+        tap_action:
+          action: navigate
+          navigation_path: "#vivint"
+        card_mod:
+          style: |
+            ha-card {
+              --icon-size: 40px;
+              --card-primary-font-size: 12px;
+              --card-secondary-font-size: 14px;
+              border-radius: 0px;
+            }
+            mushroom-shape-icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: transparent;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+      - type: custom:mushroom-template-card
+        icon: |
+          {% if is_state("lock.front_door", 'locked') %}
+            {% if is_state("lock.ratgdov25i_0b0f21_lock_remotes", 'locked') %}mdi:lock{% else %}mdi:lock-open-variant{% endif %}
+          {% else %}mdi:lock-open-variant{% endif %}
+        icon_color: >
+          {% if is_state("lock.front_door", 'locked') %}green{% else %}green{%
+          endif %}
+        layout: vertical
+        primary: Secure
+        entity: lock.front_door_lock
+        tap_action:
+          action: navigate
+          navigation_path: secure
+        hold_action:
+          action: call-service
+          service: script.lock_any_unlocked_locks
+        card_mod:
+          style: |
+            ha-card {
+              --icon-size: 40px;
+              --card-primary-font-size: 12px;
+              --card-secondary-font-size: 14px;
+              border-radius: 0px;
+            }
+            mushroom-shape-icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: transparent;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+      - type: custom:mushroom-template-card
+        icon: phu:proxmox
+        icon_color: orange
+        layout: vertical
+        primary: Homelab
+        entity: sensor.10_0_10_3_cpu_load
+        tap_action:
+          action: navigate
+          navigation_path: /dashboard-mobile/homelab
+        card_mod:
+          style: |
+            ha-card {
+              --icon-size: 40px;
+              --card-primary-font-size: 12px;
+              --card-secondary-font-size: 14px;
+              border-radius: 0px;
+            }
+            mushroom-shape-icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: transparent;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+      - type: custom:mushroom-template-card
+        icon: phu:tesla-icon
+        icon_color: red
+        layout: vertical
+        primary: Tesla
+        entity: sensor.maze_battery
+        tap_action:
+          action: navigate
+          navigation_path: "#tesla"
+        card_mod:
+          style: |
+            ha-card {
+              --icon-size: 40px;
+              --card-primary-font-size: 12px;
+              --card-secondary-font-size: 14px;
+              border-radius: 0px;
+            }
+            mushroom-shape-icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background-color: transparent;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
